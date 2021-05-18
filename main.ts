@@ -1,37 +1,45 @@
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6`, function (sprite, location) {
     Level3()
 })
-function Level2 () {
-    tiles.setTilemap(tilemap`level7`)
-    mySprite.setPosition(20, 180)
-}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (mySprite.isHittingTile(CollisionDirection.Bottom)) {
         mySprite.vy += -300
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
-    game.over(true)
+    info.startCountdown(1)
 })
 function Level3 () {
     tiles.setTilemap(tilemap`level2`)
+    info.setLife(3)
     mySprite.setPosition(20, 180)
-    for (let index = 0; index < 20; index++) {
-        MyEnemy = sprites.createProjectileFromSide(assets.tile`myTile8`, 0, 50)
-        MyEnemy.x = randint(5, 155)
-        MyEnemy.setKind(SpriteKind.Enemy)
-        pause(100)
-    }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
-    Level2()
+    level2()
 })
 function Level1 () {
     tiles.setTilemap(tilemap`level0`)
     mySprite.setPosition(20, 190)
 }
+info.onCountdownEnd(function () {
+    tiles.setTilemap(tilemap`level14`)
+    mySprite.setPosition(20, 190)
+})
+function level2 () {
+    tiles.setTilemap(tilemap`level10`)
+    info.setLife(3)
+    mySprite.setPosition(20, 190)
+}
 scene.onOverlapTile(SpriteKind.Player, sprites.swamp.swampTile16, function (sprite, location) {
     game.over(false)
+})
+function Level4 () {
+    tiles.setTilemap(tilemap`level7`)
+    info.setLife(3)
+    mySprite.setPosition(20, 180)
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
+    Level4()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
@@ -39,6 +47,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let MyEnemy: Sprite = null
 let mySprite: Sprite = null
+info.setLife(3)
 mySprite = sprites.create(img`
     ...............
     .....55555.....
@@ -73,3 +82,8 @@ scene.cameraFollowSprite(mySprite)
 controller.moveSprite(mySprite)
 mySprite.ay = 500
 Level1()
+game.onUpdateInterval(2000, function () {
+    MyEnemy = sprites.createProjectileFromSide(assets.tile`myTile8`, 0, 50)
+    MyEnemy.x = randint(5, 155)
+    MyEnemy.setKind(SpriteKind.Enemy)
+})
